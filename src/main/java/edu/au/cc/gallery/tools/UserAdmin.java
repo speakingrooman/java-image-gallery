@@ -1,5 +1,5 @@
-package edu.au.cc.gallery;
-
+package edu.au.cc.gallery.tools;
+import edu.au.cc.gallery.DB;
 import java.util.Scanner;
 
 

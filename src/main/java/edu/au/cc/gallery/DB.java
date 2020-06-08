@@ -1,6 +1,5 @@
 package edu.au.cc.gallery;
 
-
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.sql.DriverManager;
@@ -58,7 +57,7 @@ public class DB{
         }
 
 
-	public static void ListUsers() throws Exception{
+	public  static void ListUsers() throws Exception{
 		 DB db = new DB();
                 db.connect();
 		db.execute();

@@ -4,8 +4,7 @@
 
 
 package edu.au.cc.gallery;
-//import edu.au.cc.gallery.*;
-
+import edu.au.cc.gallery.tools.UserAdmin;
 public class App {
     public String getGreeting() {
         return "Hello Mohammad.";
