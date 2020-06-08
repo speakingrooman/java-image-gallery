@@ -25,9 +25,18 @@ dependencies {
     // This dependency is used by the application.
     implementation 'com.google.guava:guava:28.2-jre'
 	implementation 'software.amazon.awssdk:s3'
+// https://mvnrepository.com/artifact/org.postgresql/postgresql
+implementation group: 'org.postgresql', name: 'postgresql', version: '42.2.12'
+
+
+
 
     // Use JUnit test framework
     testImplementation 'junit:junit:4.12'
+}
+
+run {
+    standardInput = System.in
 }
 
 application {
