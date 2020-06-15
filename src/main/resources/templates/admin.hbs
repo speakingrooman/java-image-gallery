@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+        <head>
+                <title>Hello</title>
+                <meta charset='utf-8' />
+        </head>
+        <body>
+		<h1> Admin Page</h1>
+		
+	{{#each User}}
+                   {{#each this}}
+                    {{/each}}
+				<h3><a href="admin/{{@key}}"> Username: {{@key}}  &nbsp;&nbsp;&nbsp;&nbsp; 
+				FullName:{{this}} </a>		&nbsp;&nbsp;&nbsp;&nbsp;   <input type ="button" value="Delete" onclick="deleteUser()"  />					</h3>
+								
+
+	{{/each}}	
+	<br>
+
+
+	<form action = "/admin/create" method="POST">
+                        Username: <input type ="text" name="user"  /><br/>
+                        Password: <input type ="text" name="pass"  /><br/>
+                        FullName: <input type ="text" name="full" /><br/> 
+			<input type ="submit" value="Add!" />
+         </form>
+
+
+
+	<script>
+		function deleteUser(){
+			if(confirm("Are you sure you want to delete?")){
+				location.reload();
+			}
+		}
+	
+	</script>
+        </body>
+</html>

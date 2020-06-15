@@ -12,11 +12,14 @@ import java.sql.ResultSet;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
-
+import java.util.List;
+import java.util.ArrayList;
+import java.util.Map;
+import java.util.HashMap;
 
 public class DB{
         private static final String dbUrl="jdbc:postgresql://database-1.c5aarzjcoddf.us-east-2.rds.amazonaws.com/image_gallery";
-        private Connection connection;
+        private static Connection connection;
 	private JSONObject getSecret(){
 		String s = secrets.getSecretImageGallery();
 		return new JSONObject(s);
@@ -58,6 +61,29 @@ public class DB{
 		}
                 rs.close();
         }
+
+
+
+
+	 public static Map<String,String> executeUI() throws SQLException{
+		  DB db = new DB();
+                db.connect();
+		 Map<String,String> Users = new HashMap<>();
+                PreparedStatement ps = connection.prepareStatement("select * from users");
+                ResultSet rs =  ps.executeQuery();
+                while(rs.next()){
+         		Users.put(rs.getString(1),rs.getString(3));	
+		}
+                rs.close();
+		db.close();
+		return Users;
+        }
+
+
+
+
+
+
 
         public void close() throws SQLException{
                 connection.close();

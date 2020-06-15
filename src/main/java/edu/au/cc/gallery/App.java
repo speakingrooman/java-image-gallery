@@ -5,17 +5,72 @@
 
 package edu.au.cc.gallery;
 import edu.au.cc.gallery.tools.UserAdmin;
+import edu.au.cc.gallery.DB;
 import edu.au.cc.gallery.tools.secrets;
+import static spark.Spark.*;
+import java.util.Map;
+import java.util.HashMap;
+import spark.ModelAndView;
+import spark.template.handlebars.HandlebarsTemplateEngine;
+import java.util.List;
+
+
 public class App {
     public String getGreeting() {
         return "Hello Mohammad.";
     }
 
     public static void main(String[] args) throws Exception {
- System.out.println(new App().getGreeting());
-//  S3.demo();
+ //System.out.println(new App().getGreeting());
+
+ port(5000);
+ //  S3.demo();
 //  DB.demo();
- UserAdmin ua = new UserAdmin();
-    ua.mainMenu();
-    }
+// UserAdmin ua = new UserAdmin();
+   // ua.mainMenu();
+
+	get("/hello",(req,res) -> "<!DOCTYPE html><html><head><title>Hello</title><meta charset='utf-8' /></head><body><h1>Hello World</h1></body></html>");
+
+
+	post("/add",(req,res) -> "The sum is " + (Integer.parseInt(req.queryParams("x"))+ Integer.parseInt(req.queryParams("y"))));
+
+	get("/calculator",(req,res) -> {
+		Map<String,Object> model = new HashMap<String,Object>();
+		model.put("name","Fred");
+		return new HandlebarsTemplateEngine().render(new ModelAndView(model,"calculator.hbs"));
+	});
+	
+	get("/admin",(req,res) -> {
+                Map<String,Object> model = new HashMap<String,Object>();
+                model.put("User",DB.executeUI());
+                return new HandlebarsTemplateEngine().render(new ModelAndView(model,"admin.hbs"));
+        });
+
+	get("/admin/:name", (req,res) ->"Hello " +  req.params(":name"));
+
+      post("/admin/create",(req,res) ->{ 
+			DB.addUserChecks(req.queryParams("user"), req.queryParams("pass"),req.queryParams("full"));
+
+			Map<String,Object> model = new HashMap<String,Object>();
+                model.put("name",req.queryParams("full"));
+		model.put("username",req.queryParams("user"));
+                return new HandlebarsTemplateEngine().render(new ModelAndView(model,"newuser.hbs"));
+      });
+
+
+       get("/admin/create",(req,res) ->{
+                        DB.addUserChecks(req.queryParams("user"), req.queryParams("pass"),req.queryParams("full"));
+
+                        Map<String,Object> model = new HashMap<String,Object>();
+                model.put("name",req.queryParams("full"));
+                model.put("username",req.queryParams("user"));
+                return new HandlebarsTemplateEngine().render(new ModelAndView(model,"newuser.hbs"));
+      });
+
+		      
+			       
+    
+    
+  }
+
 }
