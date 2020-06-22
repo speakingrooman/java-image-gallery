@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+        <head>
+                <title>Hello</title>
+                <meta charset='utf-8' />
+        </head>
+        <body>
+
+		
+	  <form action = "/admin" method="GET">
+                        <input type ="submit" value="HOME" />
+         </form>
+
+
+
+		 <h1>Delete User {{User}}</h1>
+
+		 <form action = "/admin/delete/{{User}}" method="POST">
+                        Username: <input type ="text" name="user" value={{User}} readonly /><br/>
+                        <input type ="submit" value="Delete!" />
+         </form>
+
+    </body>
+</html>
+

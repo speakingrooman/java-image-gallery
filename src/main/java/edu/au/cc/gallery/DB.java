@@ -18,7 +18,7 @@ import java.util.Map;
 import java.util.HashMap;
 
 public class DB{
-        private static final String dbUrl="jdbc:postgresql://database-1.c5aarzjcoddf.us-east-2.rds.amazonaws.com/image_gallery";
+        private static final String dbUrl="jdbc:postgresql://image-gallery.c5aarzjcoddf.us-east-2.rds.amazonaws.com/image_gallery";
         private static Connection connection;
 	private JSONObject getSecret(){
 		String s = secrets.getSecretImageGallery();
@@ -33,9 +33,9 @@ public class DB{
               //  System.err.println("Error opening password file");
             //    System.exit(1);
           //}
-               // return null;
-	       //
-	       //
+        //        return null;
+	       
+	       
 	       return secret.getString("password");
         }
 
@@ -44,7 +44,8 @@ public class DB{
                   Class.forName("org.postgresql.Driver");
 
 		  JSONObject secret = getSecret();
-                  connection = DriverManager.getConnection(dbUrl, "image_gallery", getPassword(secret));
+         //         connection = DriverManager.getConnection(dbUrl, "image_gallery", "simple");
+		  connection = DriverManager.getConnection(dbUrl, "image_gallery", getPassword(secret));
                 } catch (ClassNotFoundException ex){
                         ex.printStackTrace();
                         System.exit(1);
@@ -113,7 +114,7 @@ public class DB{
          	if(doesExist) {
         		 System.out.println("Error: user with username "+ userName + " already exists \n");
          	} else {
-        	 	db.addToDB(userName,password,full_name);
+        	 	db.addToDB(userName.toLowerCase(),password.toLowerCase(),full_name.toLowerCase());
          	}
 	}
 	

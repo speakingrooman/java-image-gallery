@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+        <head>
+                <title>Hello</title>
+                <meta charset='utf-8' />
+        </head>
+        <body>
+
+		
+	  <form action = "/admin" method="GET">
+                        <input type ="submit" value="HOME" />
+         </form>
+
+
+
+		 <h1>Edit User {{User}}</h1>
+
+		  <form action = "/admin/edit" method="POST">
+                        Username: <input type ="text" name="user" value={{User}} readonly /><br/>
+                        Password: <input type ="text" name="pass"  /><br/>
+                        FullName: <input type ="text" name="full" /><br/>
+                        <input type ="submit" value="Add!" />
+         </form>
+
+    </body>
+</html>
+
+

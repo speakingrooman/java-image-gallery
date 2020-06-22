@@ -11,8 +11,11 @@
                    {{#each this}}
                     {{/each}}
 				<h3><a href="admin/{{@key}}"> Username: {{@key}}  &nbsp;&nbsp;&nbsp;&nbsp; 
-				FullName:{{this}} </a>		&nbsp;&nbsp;&nbsp;&nbsp;   <input type ="button" value="Delete" onclick="deleteUser()"  />					</h3>
-								
+				FullName:{{this}} </a>		&nbsp;&nbsp;&nbsp;&nbsp; 
+
+			<form action = "/admin/delete/{{@key}}" method="GET">
+			<input type ="submit" value="Delete"  />					</h3>
+			</form>
 
 	{{/each}}	
 	<br>
@@ -30,6 +33,8 @@
 	<script>
 		function deleteUser(){
 			if(confirm("Are you sure you want to delete?")){
+				
+
 				location.reload();
 			}
 		}

@@ -23,12 +23,17 @@ public class App {
     public static void main(String[] args) throws Exception {
  //System.out.println(new App().getGreeting());
 
- port(5000);
- //  S3.demo();
+ //port(5000);
+  //S3.demo();
 //  DB.demo();
 // UserAdmin ua = new UserAdmin();
    // ua.mainMenu();
 
+  String portString = System.getenv("JETTY_PORT");
+	if (portString == null || portString.equals(""))
+	    port(5000);
+	else
+	    port(Integer.parseInt(portString));
 	get("/hello",(req,res) -> "<!DOCTYPE html><html><head><title>Hello</title><meta charset='utf-8' /></head><body><h1>Hello World</h1></body></html>");
 
 
@@ -46,9 +51,50 @@ public class App {
                 return new HandlebarsTemplateEngine().render(new ModelAndView(model,"admin.hbs"));
         });
 
-	get("/admin/:name", (req,res) ->"Hello " +  req.params(":name"));
+	//get("/admin/:name", (req,res) ->"Hello " +  req.params(":name"));
 
-      post("/admin/create",(req,res) ->{ 
+        get("/admin/:name",(req,res) -> {
+                Map<String,Object> model = new HashMap<String,Object>();
+                model.put("User",req.params(":name"));
+                return new HandlebarsTemplateEngine().render(new ModelAndView(model,"edituser.hbs"));
+        });
+
+
+	  post("/admin/edit",(req,res) ->{
+                        DB.EditUserChecks(req.queryParams("user"), req.queryParams("pass"),req.queryParams("full"));
+
+                        Map<String,Object> model = new HashMap<String,Object>();
+                return new HandlebarsTemplateEngine().render(new ModelAndView(model,"edituser.hbs"));
+      });
+
+
+
+      get("/admin/delete/:name",(req,res) -> {
+                Map<String,Object> model = new HashMap<String,Object>();
+                model.put("User",req.params(":name"));
+                return new HandlebarsTemplateEngine().render(new ModelAndView(model,"deleteuser.hbs"));
+        });
+
+
+          post("/admin/delete/:name",(req,res) ->{
+                        DB.deleteUserChecks(req.params(":name"));
+
+                        Map<String,Object> model = new HashMap<String,Object>();
+                return new HandlebarsTemplateEngine().render(new ModelAndView(model,"deleteuser.hbs"));
+      });
+
+
+
+
+
+
+
+      
+	
+	
+	
+	
+	post("/admin/create",(req,res) ->{ 
 			DB.addUserChecks(req.queryParams("user"), req.queryParams("pass"),req.queryParams("full"));
 
 			Map<String,Object> model = new HashMap<String,Object>();
@@ -70,7 +116,7 @@ public class App {
 		      
 			       
     
-    
+  
   }
 
 }

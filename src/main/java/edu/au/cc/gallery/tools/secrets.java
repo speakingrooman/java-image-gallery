@@ -14,7 +14,7 @@ import java.util.Base64;
 public class secrets{
 public static String getSecretImageGallery() {
 //secrets.getSecretImageGallery();
-    String secretName = "sec-ig-image_gallery";
+    String secretName = "sec-ig-image_gallery-Assignment";
     Region region = Region.US_EAST_2;
 
     // Create a Secrets Manager client
@@ -22,9 +22,7 @@ public static String getSecretImageGallery() {
      //                               .withRegion(region)
       //                              .build();
     
-SecretsManagerClient client = SecretsManagerClient.builder()
-							.region(region)
-							.build();
+SecretsManagerClient client = SecretsManagerClient.builder().region(region).build();
 
 
     // In this sample we only handle the specific exceptions for the 'GetSecretValue' API.
