@@ -117,6 +117,44 @@ public class DB{
         	 	db.addToDB(userName.toLowerCase(),password.toLowerCase(),full_name.toLowerCase());
          	}
 	}
+
+
+	public static boolean UserCheckLogin(String userName) throws Exception{
+                 DB db = new DB();
+                 db.connect();
+                 Boolean doesExist = db.DoesExist(userName.toLowerCase());
+		 if(doesExist) {
+       
+			return true;	
+		 }
+		 	return false;
+	}
+
+	public static boolean UserCheckLoginPasswordMatch(String userName,String password) throws Exception{
+                 DB db = new DB();
+                 db.connect();
+                 Boolean doesExist = db.DoesExistPassword(userName.toLowerCase(),password);
+                 if(doesExist) {
+        
+                        return true;
+                 }
+                        return false;
+        }
+
+
+	 public Boolean DoesExistPassword(String userName,String password) throws SQLException{
+                PreparedStatement ps = connection.prepareStatement("select * from users where username=? and password=?");
+                ps.setString(1, userName);
+		 ps.setString(2, password);
+                ResultSet rs =  ps.executeQuery();
+                while(!rs.next()){
+//                       rs.close();
+                        return false;
+                }
+//              rs.close();
+                return true;
+        }
+
 	
 	public void addToDB(String userName, String password, String full_name) throws Exception {
 		 PreparedStatement ps = connection.prepareStatement("insert into users(username,password,full_name) values(?,?,?)");

@@ -13,12 +13,17 @@ import java.util.HashMap;
 import spark.ModelAndView;
 import spark.template.handlebars.HandlebarsTemplateEngine;
 import java.util.List;
-
+import spark.Request;
+import spark.Response;
 
 public class App {
     public String getGreeting() {
         return "Hello Mohammad.";
     }
+
+
+
+
 
     public static void main(String[] args) throws Exception {
  //System.out.println(new App().getGreeting());
@@ -113,10 +118,95 @@ public class App {
                 return new HandlebarsTemplateEngine().render(new ModelAndView(model,"newuser.hbs"));
       });
 
-		      
+
+ 
+
+	
+       get("/sessionDemo", (req,res) -> sessionDemo(req,res));
+	  get("/login", (req,res) ->login(req,res));
+       post("/login", (req,res) ->loginPost(req,res));
+
+	before("/admin/*", (request,response) -> checkAdmin(request,response));
+       get("/debugSession", (req,res) -> debugSession(req,res));
+      	 before("/"+"^(?!login).*$", (request,response) -> checkUserAuth(request,response)); 
 			       
-    
+
+
+
   
   }
 
+private static boolean isAdmin(String username){
+
+	return username!= null && username.equals("admin");
+}
+
+
+private static void checkAdmin(Request req, Response resp){
+	if(!isAdmin(req.session().attribute("user"))){
+		resp.redirect("/login");
+		halt();
+	}
+
+}
+
+private static void checkUserAuth(Request req, Response resp){
+	 if(req.session().attribute("user")==null || req.session().attribute("password")==null){
+                resp.redirect("/login");
+		halt();
+               
+        }
+
+}
+
+
+
+
+
+
+private static String login(Request req, Response resp){
+	Map<String,Object> model = new HashMap<String,Object>();
+	return new HandlebarsTemplateEngine().render(new ModelAndView(model,"login.hbs"));
+
+
+}
+
+private static String loginPost(Request req, Response resp){
+
+	try{
+		String username=req.queryParams("username");
+		String password = req.queryParams("password");
+		if(!DB.UserCheckLogin(username) || username==null || !DB.UserCheckLoginPasswordMatch(username,password)){
+			return "Invalid user or password";
+		}
+		req.session().attribute("user",username);
+		req.session().attribute("password",password);
+		resp.redirect("/");
+	} catch (Exception ex){
+		return "Error" + ex.getMessage();
+	}
+	return "";
+}
+
+
+
+ private static String sessionDemo(Request req, Response resp){
+        if(req.session().isNew()){
+                req.session().attribute("owner","fred");
+                 req.session().attribute("foo","bar");
+        } else {
+
+        }
+         return "stored";
+
+       }
+
+
+       private static String debugSession(Request req, Response resp){
+               StringBuffer sb = new StringBuffer();
+        for(String key:req.session().attributes()){
+                sb.append(key+"->"+req.session().attribute(key)+"<br/>");
+        }
+        return sb.toString();
+      }
 }

@@ -11,8 +11,15 @@ ln -s ec2-prod-$1.sh ec2-prod-latest.sh
 cd ..
 
 CONFIG_BUCKET="s3://edu.au.cc.image-gallery-mohammad-config"
-
+echo "problem is in deploy"
 sudo aws s3 cp ec2-scripts/ec2-prod-$1.sh  ${CONFIG_BUCKET}
 sudo aws s3 cp ec2-scripts/ec2-prod-latest.sh ${CONFIG_BUCKET}
 sudo aws s3 cp /etc/nginx/nginx.conf ${CONFIG_BUCKET}/nginx/nginx.conf
 sudo aws s3 cp /etc/nginx/default.d/image_gallery.conf ${CONFIG_BUCKET}/nginx/default.d/image_gallery.conf
+
+
+
+sudo aws s3 cp ec2-scripts/ec2-prod-$1.sh  s3://edu.au.cc.image-gallery-mohammad-config
+sudo aws s3 cp ec2-scripts/ec2-prod-latest.sh s3://edu.au.cc.image-gallery-mohammad-config
+sudo aws s3 cp /etc/nginx/nginx.conf s3://edu.au.cc.image-gallery-mohammad-config/nginx/nginx.conf
+sudo aws s3 cp /etc/nginx/default.d/image_gallery.conf s3://edu.au.cc.image-gallery-mohammad-config/nginx/default.d/image_gallery.conf
